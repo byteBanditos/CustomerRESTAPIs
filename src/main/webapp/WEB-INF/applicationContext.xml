@@ -12,7 +12,7 @@
 	<import resource="database-config.xml" />
 
 	<context:component-scan
-		base-package="com.bestbuy"></context:component-scan>
+		base-package="com.rab3"></context:component-scan>
 
 	<mvc:annotation-driven>
 		<mvc:message-converters>

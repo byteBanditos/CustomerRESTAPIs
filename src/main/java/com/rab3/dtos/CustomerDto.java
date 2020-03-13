@@ -1,7 +1,6 @@
 package com.rab3.dtos;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 public class CustomerDto implements Serializable {
