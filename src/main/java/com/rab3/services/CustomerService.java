@@ -34,6 +34,8 @@ public class CustomerService {
 		ae.setCity(address.getCity());
 		ae.setState(address.getState());
 		ae.setZip(address.getZip());
+		ae.setCustomer(entity);
+		
 		entity.setAddress(ae);
 		
 		LoginDto login = dto.getLogin();
@@ -43,7 +45,10 @@ public class CustomerService {
 		le.setCreatedDate(new Date());
 		le.setUpdateDate(new Date());
 		le.setLastsession(new Date());
+		le.setCustomer(entity);
+		
 		entity.setLogin(le);
+		
 
 		customerrepository.save(entity);
 	}
