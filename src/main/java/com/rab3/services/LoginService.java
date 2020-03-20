@@ -20,7 +20,7 @@ public class LoginService {
 		loginentity.setUpdateDate(new Date());
 		loginentity.setLastsession(new Date());
 		
-		loginrepository.save(loginentity);
+		//loginrepository.save(loginentity);
     }
 
 }

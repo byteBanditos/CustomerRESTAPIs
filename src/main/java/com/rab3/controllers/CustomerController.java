@@ -1,7 +1,12 @@
 package com.rab3.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,13 +26,41 @@ public class CustomerController {
 		customerservice.createCustomer(dto);
 
 	}
-	/*
-	 * @PostMapping(value = "/customerId") public void
-	 * addAddressAndLogin(@RequestParam int customerId, @RequestBody AddressDto
-	 * address,
-	 * 
-	 * @RequestBody LoginDto login) {
-	 * customerservice.createAddressAndLogin(customerId, address, login); }
-	 */
+
+	@GetMapping(value = "/{customerId}")
+	public CustomerDto getAllInformation(@PathVariable Integer customerId) {
+		return customerservice.getAllDataById(customerId);
+
+	}
+
+	@PutMapping(value = "update/{id}")
+	public void updateCustomer(@PathVariable Integer id, @RequestBody CustomerDto customer) {
+		customerservice.updateCustomer(customer, id);
+
+	}
+
+	@PutMapping(value = "/{id}/address/{addressid}")
+	public void updateAddress(@PathVariable Integer id, @RequestBody CustomerDto customer,
+			@PathVariable int addressid) {
+		customerservice.updateAddress(id, customer, addressid);
+
+	}
+
+	@GetMapping(value = "find/{lastname}")
+	public List<CustomerDto> getByLastName(@PathVariable String lastname) {
+		return customerservice.getCustomerByLastName(lastname);
+
+	}
+
+	@GetMapping("/allcustomer")
+	public List<CustomerDto> displayAllCustomer() {
+		return customerservice.getAllCustomer();
+	}
+
+	@PutMapping(value = "/{id}/login")
+	public void changelogin(@PathVariable Integer id, @RequestBody CustomerDto customer) {
+		customerservice.updateLogin(id, customer);
+
+	}
 
 }
