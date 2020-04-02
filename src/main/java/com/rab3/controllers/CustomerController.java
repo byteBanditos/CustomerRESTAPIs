@@ -52,12 +52,12 @@ public class CustomerController {
 
 	}
 
-	@GetMapping("/allcustomer")
+	@GetMapping
 	public List<CustomerDto> displayAllCustomer() {
 		return customerservice.getAllCustomer();
 	}
 
-	@PutMapping(value = "/{id}/login")
+	@PutMapping(value = "/update/login/{id}")
 	public void changelogin(@PathVariable Integer id, @RequestBody CustomerDto customer) {
 		customerservice.updateLogin(id, customer);
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,34 +24,26 @@ public class CustomerService {
 
 	public void createCustomer(CustomerDto dto) {
 		CustomerEntity entity = new CustomerEntity();
-		entity.setFname(dto.getFname());
-		entity.setLname(dto.getLname());
-		entity.setPhone(dto.getPhone());
-		entity.setEmail(dto.getEmail());
+		BeanUtils.copyProperties(dto, entity);
 		entity.setCreatedDate(new Date());
 		entity.setUpdateDate(new Date());
 
 		AddressDto address = dto.getAddress();
-		AddressEntity ae = new AddressEntity();
-		ae.setAddress1(address.getAddress1());
-		ae.setAddress2(address.getAddress2());
-		ae.setCity(address.getCity());
-		ae.setState(address.getState());
-		ae.setZip(address.getZip());
-		ae.setCustomer(entity);
+		AddressEntity addressentity = new AddressEntity();
+		BeanUtils.copyProperties(address, addressentity);
+		addressentity.setCustomer(entity);
 
-		entity.setAddress(ae);
+		entity.setAddress(addressentity);
 
 		LoginDto login = dto.getLogin();
-		LoginEntity le = new LoginEntity();
-		le.setUsername(login.getUsername());
-		le.setPassword(login.getPassword());
-		le.setCreatedDate(new Date());
-		le.setUpdateDate(new Date());
-		le.setLastsession(new Date());
-		le.setCustomer(entity);
+		LoginEntity loginentity = new LoginEntity();
+		BeanUtils.copyProperties(login, loginentity);
+		loginentity.setCreatedDate(new Date());
+		loginentity.setUpdateDate(new Date());
+		loginentity.setLastsession(new Date());
+		loginentity.setCustomer(entity);
 
-		entity.setLogin(le);
+		entity.setLogin(loginentity);
 
 		customerrepository.save(entity);
 	}
@@ -58,25 +51,16 @@ public class CustomerService {
 	public CustomerDto getAllDataById(Integer customerId) {
 		CustomerEntity entity = customerrepository.getById(customerId);
 		CustomerDto dto = new CustomerDto();
-		dto.setFname(entity.getFname());
-		dto.setLname(entity.getLname());
-		dto.setEmail(entity.getEmail());
-		dto.setPhone(entity.getPhone());
+		BeanUtils.copyProperties(entity, dto);
 
 		AddressEntity aentity = entity.getAddress();
 		AddressDto address = new AddressDto();
-		address.setAddress1(aentity.getAddress1());
-		address.setAddress2(aentity.getAddress2());
-		address.setCity(aentity.getCity());
-		address.setZip(aentity.getZip());
-
+		BeanUtils.copyProperties(aentity, address);
 		dto.setAddress(address);
 
 		LoginEntity loginentity = entity.getLogin();
 		LoginDto login = new LoginDto();
-		login.setUsername(loginentity.getUsername());
-		login.setPassword(loginentity.getPassword());
-
+		BeanUtils.copyProperties(loginentity, login);
 		dto.setLogin(login);
 
 		return dto;
@@ -86,29 +70,19 @@ public class CustomerService {
 	public void updateCustomer(CustomerDto dto, Integer id) {
 
 		CustomerEntity entity = customerrepository.getById(id);
-
-		entity.setFname(dto.getFname());
-		entity.setLname(dto.getLname());
-		entity.setEmail(dto.getEmail());
-		entity.setPhone(dto.getPhone());
+		BeanUtils.copyProperties(dto, entity);
 		entity.setUpdateDate(new Date());
 
 		AddressDto address = dto.getAddress();
-
 		AddressEntity addressentity = entity.getAddress();
-		addressentity.setAddress1(address.getAddress1());
-		addressentity.setAddress2(address.getAddress2());
-		addressentity.setCity(address.getCity());
-		addressentity.setState(address.getState());
-		addressentity.setZip(address.getZip());
+		BeanUtils.copyProperties(address, addressentity);
 		addressentity.setCustomer(entity);
 
 		entity.setAddress(addressentity);
 
 		LoginDto login = dto.getLogin();
 		LoginEntity loginentity = entity.getLogin();
-		loginentity.setUsername(login.getUsername());
-		loginentity.setPassword(login.getPassword());
+		BeanUtils.copyProperties(login, loginentity);
 		loginentity.setUpdateDate(new Date());
 		loginentity.setLastsession(new Date());
 		loginentity.setCustomer(entity);
@@ -124,20 +98,11 @@ public class CustomerService {
 		List<CustomerEntity> entity = (List<CustomerEntity>) customerrepository.getCustomerByLastName(lastname);
 		for (CustomerEntity cust : entity) {
 			CustomerDto dto = new CustomerDto();
-			dto.setCustomerId(cust.getCustomerId());
-			dto.setFname(cust.getFname());
-			dto.setLname(cust.getLname());
-			dto.setEmail(cust.getEmail());
-			dto.setPhone(cust.getPhone());
+			BeanUtils.copyProperties(cust, dto);
 
 			AddressEntity addressentity = cust.getAddress();
 			AddressDto addressDto = new AddressDto();
-			addressDto.setAddress1(addressentity.getAddress1());
-			addressDto.setAddress2(addressentity.getAddress2());
-			addressDto.setCity(addressentity.getCity());
-			addressDto.setState(addressentity.getState());
-			addressDto.setZip(addressentity.getZip());
-
+			BeanUtils.copyProperties(addressentity, addressDto);
 			dto.setAddress(addressDto);
 
 			customer.add(dto);
@@ -153,29 +118,17 @@ public class CustomerService {
 
 		for (CustomerEntity customerentity : entity) {
 			CustomerDto dto = new CustomerDto();
-			dto.setCustomerId(customerentity.getCustomerId());
-			dto.setFname(customerentity.getFname());
-			dto.setFname(customerentity.getLname());
-			dto.setEmail(customerentity.getEmail());
-			dto.setPhone(customerentity.getPhone());
+			BeanUtils.copyProperties(customerentity, dto);
 
 			AddressEntity addressentity = customerentity.getAddress();
 			AddressDto addressDto = new AddressDto();
-			addressDto.setAddress1(addressentity.getAddress1());
-			addressDto.setAddress2(addressentity.getAddress2());
-			addressDto.setCity(addressentity.getCity());
-			addressDto.setState(addressentity.getState());
-			addressDto.setZip(addressentity.getZip());
-			customerentity.setAddress(addressentity);
-
+			BeanUtils.copyProperties(addressentity, addressDto);
 			dto.setAddress(addressDto);
 
 			LoginEntity loginentity = customerentity.getLogin();
 			LoginDto login = new LoginDto();
-			login.setUsername(loginentity.getUsername());
-			login.setPassword(loginentity.getPassword());
+			BeanUtils.copyProperties(loginentity, login);
 			customerentity.setLogin(loginentity);
-
 			dto.setLogin(login);
 
 			customer.add(dto);
@@ -189,13 +142,7 @@ public class CustomerService {
 
 		AddressEntity addressentity = entity.getAddress();
 		AddressDto address = dto.getAddress();
-		addressentity.setId(addressid);
-		addressentity.setAddress1(address.getAddress1());
-		addressentity.setAddress2(address.getAddress2());
-		addressentity.setCity(address.getCity());
-		addressentity.setState(address.getState());
-		addressentity.setZip(address.getZip());
-		addressentity.setCustomer(entity);
+		BeanUtils.copyProperties(address, addressentity);
 
 		entity.setAddress(addressentity);
 
